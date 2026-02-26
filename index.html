@@ -3,515 +3,200 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NextChapter - Deine Karriere. Deine Zukunft.</title>
+    <title>NextChapter | Future-Proof Your Career</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        :root {
+            --primary: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
+            --bg-dark: #0f172a;
+            --card-bg: rgba(255, 255, 255, 0.05);
+            --text-main: #f8fafc;
+            --accent: #22d3ee;
         }
 
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            font-family: 'Inter', system-ui, sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-main);
             line-height: 1.6;
-            color: #333;
             overflow-x: hidden;
-            scroll-behavior: smooth;
         }
 
-        /* Navigation */
+        /* Modern Glassmorphism Nav */
         nav {
             position: fixed;
-            top: 0;
             width: 100%;
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            box-shadow: 0 2px 20px rgba(0,0,0,0.1);
-            z-index: 1000;
-            padding: 1rem 0;
-        }
-
-        nav .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 2rem;
+            padding: 1.5rem;
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            z-index: 100;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
 
-        nav .logo {
-            font-size: 1.5rem;
-            font-weight: bold;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        nav .nav-links {
-            display: flex;
-            gap: 2rem;
-            list-style: none;
-        }
-
-        nav a {
-            text-decoration: none;
-            color: #333;
-            font-weight: 500;
-            transition: color 0.3s;
-        }
-
-        nav a:hover {
-            color: #667eea;
-        }
-
-        /* SVG Icons */
-        .svg-icon {
-            width: 60px;
-            height: 60px;
-            margin-bottom: 1rem;
-        }
+        .logo { font-weight: 800; font-size: 1.4rem; background: var(--primary); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
 
         /* Hero Section */
         .hero {
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
-            color: white;
-            position: relative;
-            overflow: hidden;
-            padding-top: 80px;
-        }
-
-        .hero::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 600"><path d="M0,300 Q300,100 600,300 T1200,300 L1200,600 L0,600 Z" fill="rgba(255,255,255,0.1)"/></svg>') no-repeat bottom;
-            background-size: cover;
-        }
-
-        .hero .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 2rem;
-            position: relative;
-            z-index: 1;
-            text-align: center;
-        }
-
-        .hero h1 {
-            font-size: 3.5rem;
-            margin-bottom: 1.5rem;
-            animation: fadeInUp 1s ease;
-        }
-
-        .hero p {
-            font-size: 1.3rem;
-            margin-bottom: 2rem;
-            opacity: 0.95;
-            animation: fadeInUp 1s ease 0.2s both;
-        }
-
-        .hero .tagline {
-            font-size: 1rem;
-            opacity: 0.8;
-            margin-bottom: 3rem;
-            animation: fadeInUp 1s ease 0.4s both;
-        }
-
-        .cta-button {
-            display: inline-block;
-            padding: 1rem 3rem;
-            background: white;
-            color: #667eea;
-            text-decoration: none;
-            border-radius: 50px;
-            font-weight: bold;
-            font-size: 1.1rem;
-            transition: all 0.3s;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-            animation: fadeInUp 1s ease 0.6s both;
-            cursor: pointer;
-            border: none;
-        }
-
-        .cta-button:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
-        }
-
-        /* Stats Bar */
-        .stats-bar {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 2rem 0;
-        }
-
-        .stats-bar .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 2rem;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 2rem;
-            text-align: center;
-        }
-
-        .stat-number {
-            font-size: 2.5rem;
-            font-weight: bold;
-            margin-bottom: 0.5rem;
-        }
-
-        /* Problem Section */
-        .problem {
-            padding: 6rem 2rem;
-            background: #f8f9fa;
-        }
-
-        .problem h2 {
-            text-align: center;
-            font-size: 2.5rem;
-            margin-bottom: 3rem;
-        }
-
-        .problem-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .problem-card {
-            background: white;
-            padding: 2.5rem;
-            border-radius: 15px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.05);
-            text-align: center;
-        }
-
-        /* Quiz Section */
-        .quiz-section {
-            padding: 6rem 2rem;
-            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-            color: white;
-        }
-
-        .quiz-section .container {
-            max-width: 800px;
-            margin: 0 auto;
-        }
-
-        .quiz-container {
-            background: white;
-            color: #333;
-            padding: 2.5rem;
-            border-radius: 20px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.2);
-            min-height: 450px;
-            position: relative;
-        }
-
-        .progress-bar {
-            width: 100%;
-            height: 8px;
-            background: #eee;
-            border-radius: 10px;
-            margin-bottom: 2rem;
-        }
-
-        .progress-fill {
-            height: 100%;
-            background: #667eea;
-            width: 0%;
-            transition: width 0.4s ease;
-            border-radius: 10px;
-        }
-
-        .question {
-            display: none;
-        }
-
-        .question.active {
-            display: block;
-            animation: fadeIn 0.5s;
-        }
-
-        .radio-group {
+            height: 100vh;
             display: flex;
             flex-direction: column;
-            gap: 0.8rem;
-            margin-top: 1.5rem;
-        }
-
-        .radio-option {
-            padding: 1rem;
-            border: 2px solid #eee;
-            border-radius: 10px;
-            cursor: pointer;
-            display: flex;
+            justify-content: center;
             align-items: center;
-            gap: 10px;
-            transition: 0.3s;
-        }
-
-        .radio-option:hover {
-            border-color: #667eea;
-        }
-
-        .radio-option.selected {
-            border-color: #667eea;
-            background: #f0f4ff;
-        }
-
-        .quiz-buttons {
-            margin-top: 2rem;
-            display: flex;
-            gap: 1rem;
-        }
-
-        .btn {
-            padding: 1rem 2rem;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: bold;
-            flex: 1;
-        }
-
-        .btn-primary { background: #667eea; color: white; }
-        .btn-secondary { background: #eee; }
-
-        #result-container {
-            display: none;
             text-align: center;
+            padding: 2rem;
+            background: radial-gradient(circle at top right, rgba(99, 102, 241, 0.15), transparent);
         }
 
-        .risk-score {
-            font-size: 4rem;
-            font-weight: bold;
-            margin: 1rem 0;
+        h1 { font-size: clamp(2.5rem, 8vw, 4.5rem); line-height: 1.1; margin-bottom: 1.5rem; }
+        .gradient-text { background: var(--primary); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+
+        /* Unified Quiz Container */
+        .quiz-card {
+            max-width: 600px;
+            margin: -100px auto 100px;
+            background: rgba(30, 41, 59, 0.7);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 24px;
+            padding: 3rem;
+            backdrop-filter: blur(20px);
+            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5);
         }
 
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+        .progress-container { height: 6px; background: rgba(255,255,255,0.1); border-radius: 10px; margin-bottom: 2rem; }
+        .progress-bar { height: 100%; background: var(--primary); width: 0%; transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1); border-radius: 10px; }
+
+        .option-btn {
+            display: block;
+            width: 100%;
+            padding: 1.2rem;
+            margin: 0.8rem 0;
+            background: var(--card-bg);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 12px;
+            color: white;
+            text-align: left;
+            cursor: pointer;
+            transition: all 0.2s;
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
+        .option-btn:hover { background: rgba(255,255,255,0.1); border-color: var(--accent); transform: translateX(5px); }
+
+        .btn-main {
+            background: var(--primary);
+            color: white;
+            padding: 1rem 2.5rem;
+            border-radius: 99px;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            transition: opacity 0.3s;
         }
 
-        @media (max-width: 600px) {
-            .hero h1 { font-size: 2.2rem; }
-            .quiz-container { padding: 1.5rem; }
-        }
+        #result-view { display: none; text-align: center; }
+        .score { font-size: 5rem; font-weight: 900; color: var(--accent); }
+
+        @keyframes slideIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        .animate { animation: slideIn 0.5s forwards; }
     </style>
 </head>
 <body>
 
     <nav>
-        <div class="container">
-            <div class="logo">NextChapter</div>
-            <ul class="nav-links">
-                <li><a href="#home">Home</a></li>
-                <li><a href="#problem">Problem</a></li>
-                <li><a href="#quiz">KI-Check</a></li>
-            </ul>
-        </div>
+        <div class="logo">NextChapter.</div>
+        <div style="font-size: 0.8rem; opacity: 0.6;">ROSTOCK // 2026</div>
     </nav>
 
-    <section class="hero" id="home">
-        <div class="container">
-            <h1>Dein nächstes Kapitel startet hier.</h1>
-            <p>Mach deine Karriere zukunftssicher – mit KI-Check und dem perfekten Job-Match.</p>
-            <div class="tagline">Out of Rostock. For Everyone.</div>
-            <a href="#quiz" class="cta-button">Jetzt Risiko checken</a>
-        </div>
+    <section class="hero">
+        <h1>Dein Job. <br><span class="gradient-text">Die Zukunft.</span></h1>
+        <p style="max-width: 600px; opacity: 0.7; margin-bottom: 2rem;">Analysiere mit unserer Engine, wie sicher deine Karriere im Zeitalter der KI wirklich ist.</p>
+        <button class="btn-main" onclick="document.getElementById('quiz').scrollIntoView({behavior: 'smooth'})">Check starten</button>
     </section>
 
-    <section class="stats-bar">
-        <div class="container">
-            <div class="stat"><div class="stat-number">1.200+</div><div class="stat-label">Analysen</div></div>
-            <div class="stat"><div class="stat-number">62%</div><div class="stat-label">KI-Potenzial</div></div>
-            <div class="stat"><div class="stat-number">100%</div><div class="stat-label">Kostenlos</div></div>
+    <div class="quiz-card" id="quiz">
+        <div id="quiz-view">
+            <div class="progress-container"><div class="progress-bar" id="progress"></div></div>
+            <p id="step-counter" style="font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 1rem; color: var(--accent);"></p>
+            <h2 id="question-text" style="margin-bottom: 1.5rem;">Lade Analyse...</h2>
+            <div id="options-container"></div>
         </div>
-    </section>
 
-    <section class="problem" id="problem">
-        <div class="container">
-            <h2>Die Welt verändert sich</h2>
-            <div class="problem-grid">
-                <div class="problem-card">
-                    <h3>Automatisierung</h3>
-                    <p>Routineaufgaben werden zunehmend von Algorithmen übernommen.</p>
-                </div>
-                <div class="problem-card">
-                    <h3>Neue Skills</h3>
-                    <p>Kreativität und Empathie werden wichtiger als reine Datenverarbeitung.</p>
-                </div>
-            </div>
+        <div id="result-view">
+            <h2 style="margin-bottom: 1rem;">Deine Analyse</h2>
+            <div class="score" id="final-score">0%</div>
+            <p id="result-text" style="margin-bottom: 2rem; opacity: 0.8;"></p>
+            <button class="btn-main" onclick="location.reload()">Neustart</button>
         </div>
-    </section>
-
-    <section class="quiz-section" id="quiz">
-        <div class="container">
-            <div class="quiz-container">
-                <div id="quiz-flow">
-                    <div class="progress-bar"><div class="progress-fill" id="progress"></div></div>
-                    <p id="counter">Frage 1 von 5</p>
-                    
-                    <form id="quizForm">
-                        <div class="question active" data-step="1">
-                            <h3>Wie viel deiner täglichen Arbeit besteht aus Dateneingabe oder Berichten?</h3>
-                            <div class="radio-group">
-                                <label class="radio-option"><input type="radio" name="q1" value="4"> Fast alles</label>
-                                <label class="radio-option"><input type="radio" name="q1" value="2"> Etwa die Hälfte</label>
-                                <label class="radio-option"><input type="radio" name="q1" value="0"> Kaum etwas</label>
-                            </div>
-                        </div>
-                        <div class="question" data-step="2">
-                            <h3>Wie oft musst du komplexe zwischenmenschliche Konflikte lösen?</h3>
-                            <div class="radio-group">
-                                <label class="radio-option"><input type="radio" name="q2" value="0"> Täglich</label>
-                                <label class="radio-option"><input type="radio" name="q2" value="2"> Gelegentlich</label>
-                                <label class="radio-option"><input type="radio" name="q2" value="4"> Fast nie</label>
-                            </div>
-                        </div>
-                        <div class="question" data-step="3">
-                            <h3>Erfordert dein Job körperliche Präsenz an wechselnden Orten?</h3>
-                            <div class="radio-group">
-                                <label class="radio-option"><input type="radio" name="q3" value="0"> Ja, ständig</label>
-                                <label class="radio-option"><input type="radio" name="q3" value="2"> Manchmal</label>
-                                <label class="radio-option"><input type="radio" name="q3" value="4"> Nein, reiner Bildschirmjob</label>
-                            </div>
-                        </div>
-                        <div class="question" data-step="4">
-                            <h3>Wie standardisiert sind deine Arbeitsabläufe?</h3>
-                            <div class="radio-group">
-                                <label class="radio-option"><input type="radio" name="q4" value="4"> Es gibt für alles ein festes Schema</label>
-                                <label class="radio-option"><input type="radio" name="q4" value="2"> Teils/Teils</label>
-                                <label class="radio-option"><input type="radio" name="q4" value="0"> Jeder Tag ist komplett unvorhersehbar</label>
-                            </div>
-                        </div>
-                        <div class="question" data-step="5">
-                            <h3>Wie oft nutzt du bereits KI-Tools (ChatGPT, etc.)?</h3>
-                            <div class="radio-group">
-                                <label class="radio-option"><input type="radio" name="q5" value="0"> Ich bin bereits Profi darin</label>
-                                <label class="radio-option"><input type="radio" name="q5" value="2"> Ich probiere es gerade aus</label>
-                                <label class="radio-option"><input type="radio" name="q5" value="4"> Bisher gar nicht</label>
-                            </div>
-                        </div>
-
-                        <div class="quiz-buttons">
-                            <button type="button" class="btn btn-secondary" id="prevBtn" style="display:none">Zurück</button>
-                            <button type="button" class="btn btn-primary" id="nextBtn">Weiter</button>
-                        </div>
-                    </form>
-                </div>
-
-                <div id="result-container">
-                    <h2>Dein Ergebnis</h2>
-                    <div class="risk-score" id="score-val">0%</div>
-                    <h3 id="risk-label">Mittleres Risiko</h3>
-                    <p id="risk-desc" style="margin: 1.5rem 0; color: #666;"></p>
-                    <button class="cta-button" onclick="location.reload()">Test wiederholen</button>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <footer>
-        <p>&copy; 2026 NextChapter - Made with ❤️ in Rostock</p>
-    </footer>
+    </div>
 
     <script>
-        const questions = document.querySelectorAll('.question');
-        const nextBtn = document.getElementById('nextBtn');
-        const prevBtn = document.getElementById('prevBtn');
-        const progress = document.getElementById('progress');
-        const counter = document.getElementById('counter');
-        let currentStep = 0;
+        const quizData = [
+            { q: "Wie viel deiner Arbeit ist Routine?", options: [
+                {t: "Fast alles (Automatisierbar)", v: 4},
+                {t: "Teils/Teils", v: 2},
+                {t: "Kaum etwas (Kreativ/Sozial)", v: 0}
+            ]},
+            { q: "Interagierst du primär mit Menschen?", options: [
+                {t: "Ja, tiefe Beratung/Empathie", v: 0},
+                {t: "Eher Daten & E-Mails", v: 4},
+                {t: "Mix aus beidem", v: 2}
+            ]},
+            { q: "Nutzt du bereits aktiv KI-Tools?", options: [
+                {t: "Ja, täglich (Pro-Level)", v: 0},
+                {t: "Bisher gar nicht", v: 4},
+                {t: "Ich experimentiere", v: 2}
+            ]}
+        ];
 
-        // UI Update: Radio Selection Highlight
-        document.querySelectorAll('.radio-option').forEach(opt => {
-            opt.addEventListener('click', () => {
-                const parent = opt.parentElement;
-                parent.querySelectorAll('.radio-option').forEach(r => r.classList.remove('selected'));
-                opt.classList.add('selected');
-                opt.querySelector('input').checked = true;
-            });
-        });
+        let currentIdx = 0;
+        let totalPoints = 0;
 
-        nextBtn.addEventListener('click', () => {
-            const currentQ = questions[currentStep];
-            const selected = currentQ.querySelector('input:checked');
+        function renderStep() {
+            const step = quizData[currentIdx];
+            document.getElementById('step-counter').innerText = `Schritt ${currentIdx + 1} von ${quizData.length}`;
+            document.getElementById('question-text').innerText = step.q;
+            document.getElementById('progress').style.width = `${(currentIdx / quizData.length) * 100}%`;
             
-            if (!selected) {
-                alert("Bitte wähle eine Option aus!");
-                return;
-            }
+            const container = document.getElementById('options-container');
+            container.innerHTML = '';
+            
+            step.options.forEach(opt => {
+                const btn = document.createElement('button');
+                btn.className = 'option-btn animate';
+                btn.innerText = opt.t;
+                btn.onclick = () => handleSelect(opt.v);
+                container.appendChild(btn);
+            });
+        }
 
-            if (currentStep < questions.length - 1) {
-                currentQ.classList.remove('active');
-                currentStep++;
-                questions[currentStep].classList.add('active');
-                updateUI();
+        function handleSelect(val) {
+            totalPoints += val;
+            if(currentIdx < quizData.length - 1) {
+                currentIdx++;
+                renderStep();
             } else {
                 showResults();
             }
-        });
-
-        prevBtn.addEventListener('click', () => {
-            questions[currentStep].classList.remove('active');
-            currentStep--;
-            questions[currentStep].classList.add('active');
-            updateUI();
-        });
-
-        function updateUI() {
-            counter.innerText = `Frage ${currentStep + 1} von ${questions.length}`;
-            progress.style.width = `${((currentStep) / (questions.length - 1)) * 100}%`;
-            prevBtn.style.display = currentStep === 0 ? 'none' : 'block';
-            nextBtn.innerText = currentStep === questions.length - 1 ? 'Ergebnis anzeigen' : 'Weiter';
         }
 
         function showResults() {
-            let score = 0;
-            const answers = document.querySelectorAll('input:checked');
-            answers.forEach(a => score += parseInt(a.value));
-
-            // Max Score ist 20 (5 Fragen * 4 Punkte)
-            const percentage = (score / 20) * 100;
+            document.getElementById('quiz-view').style.display = 'none';
+            const resView = document.getElementById('result-view');
+            resView.style.display = 'block';
+            resView.classList.add('animate');
             
-            document.getElementById('quiz-flow').style.display = 'none';
-            document.getElementById('result-container').style.display = 'block';
-            document.getElementById('score-val').innerText = percentage + "%";
-
-            const desc = document.getElementById('risk-desc');
-            const label = document.getElementById('risk-label');
-
-            if (percentage < 40) {
-                label.innerText = "Niedriges Risiko ✅";
-                label.style.color = "#22c55e";
-                desc.innerText = "Dein Job erfordert viel menschliche Intuition oder physische Flexibilität. KI ist für dich eher ein Werkzeug als eine Gefahr.";
-            } else if (percentage < 70) {
-                label.innerText = "Mittleres Risiko ⚠️";
-                label.style.color = "#f59e0b";
-                desc.innerText = "Teile deines Jobs könnten automatisiert werden. Es ist ein guter Zeitpunkt, dich mit KI-Tools vertraut zu machen.";
-            } else {
-                label.innerText = "Hohes Risiko 🚨";
-                label.style.color = "#ef4444";
-                desc.innerText = "Dein Tätigkeitsfeld ist stark von Automatisierung betroffen. Nutze NextChapter, um frühzeitig neue Skills zu lernen!";
-            }
+            const maxPoints = quizData.length * 4;
+            const percent = Math.round((totalPoints / maxPoints) * 100);
+            document.getElementById('final-score').innerText = percent + "%";
+            
+            const text = percent > 60 ? "🚨 Hoher Handlungsbedarf. Zeit für neue Skills!" : "✅ Dein Job ist vergleichsweise sicher.";
+            document.getElementById('result-text').innerText = text;
         }
+
+        // Init
+        renderStep();
     </script>
 </body>
 </html>
