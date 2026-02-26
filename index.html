@@ -1,3 +1,10 @@
+Code
+
+Preview
+
+
+
+
 <!DOCTYPE html>
 <html lang="de">
 <head>
@@ -64,6 +71,13 @@
             color: #667eea;
         }
 
+        /* SVG Icons */
+        .svg-icon {
+            width: 60px;
+            height: 60px;
+            margin-bottom: 1rem;
+        }
+
         /* Hero Section */
         .hero {
             min-height: 100vh;
@@ -128,11 +142,45 @@
             transition: all 0.3s;
             box-shadow: 0 10px 30px rgba(0,0,0,0.2);
             animation: fadeInUp 1s ease 0.6s both;
+            cursor: pointer;
+            border: none;
         }
 
         .cta-button:hover {
             transform: translateY(-3px);
             box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+        }
+
+        /* Stats Bar */
+        .stats-bar {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2rem 0;
+        }
+
+        .stats-bar .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            text-align: center;
+        }
+
+        .stat {
+            padding: 1rem;
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            opacity: 0.9;
         }
 
         /* Problem Section */
@@ -165,15 +213,11 @@
             border-radius: 15px;
             box-shadow: 0 5px 20px rgba(0,0,0,0.1);
             transition: transform 0.3s;
+            text-align: center;
         }
 
         .problem-card:hover {
             transform: translateY(-10px);
-        }
-
-        .problem-card .icon {
-            font-size: 3rem;
-            margin-bottom: 1rem;
         }
 
         .problem-card h3 {
@@ -218,15 +262,11 @@
             color: white;
             border-radius: 15px;
             transition: transform 0.3s;
+            text-align: center;
         }
 
         .feature:hover {
             transform: scale(1.05);
-        }
-
-        .feature .icon {
-            font-size: 3rem;
-            margin-bottom: 1rem;
         }
 
         .feature h3 {
@@ -257,51 +297,7 @@
             padding: 3rem;
             border-radius: 20px;
             box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-        }
-
-        .question {
-            margin-bottom: 2rem;
-        }
-
-        .question label {
-            display: block;
-            font-weight: bold;
-            margin-bottom: 1rem;
-            font-size: 1.1rem;
-        }
-
-        .question input[type="text"],
-        .question input[type="email"] {
-            width: 100%;
-            padding: 0.8rem;
-            border: 2px solid #ddd;
-            border-radius: 10px;
-            font-size: 1rem;
-            transition: border 0.3s;
-        }
-
-        .question input:focus {
-            outline: none;
-            border-color: #667eea;
-        }
-
-        .radio-group {
-            display: flex;
-            flex-direction: column;
-            gap: 0.8rem;
-        }
-
-        .radio-option {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            cursor: pointer;
-        }
-
-        .radio-option input[type="radio"] {
-            width: 20px;
-            height: 20px;
-            cursor: pointer;
+            min-height: 500px;
         }
 
         .progress-bar {
@@ -316,48 +312,330 @@
         .progress-fill {
             height: 100%;
             background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
-            transition: width 0.3s;
+            transition: width 0.5s ease;
         }
 
-        .submit-btn {
+        .question-counter {
+            text-align: center;
+            color: #999;
+            margin-bottom: 2rem;
+            font-size: 0.9rem;
+        }
+
+        .question {
+            display: none;
+            animation: slideIn 0.5s ease;
+        }
+
+        .question.active {
+            display: block;
+        }
+
+        .question label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 1.5rem;
+            font-size: 1.3rem;
+            color: #333;
+        }
+
+        .question input[type="text"],
+        .question input[type="email"] {
             width: 100%;
             padding: 1rem;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            transition: border 0.3s;
+            margin-bottom: 2rem;
+        }
+
+        .question input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .radio-group {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .radio-option {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1.2rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .radio-option:hover {
+            border-color: #667eea;
+            background: #f8f9fa;
+        }
+
+        .radio-option input[type="radio"] {
+            width: 24px;
+            height: 24px;
+            cursor: pointer;
+            accent-color: #667eea;
+        }
+
+        .radio-option.selected {
+            border-color: #667eea;
+            background: #f0f4ff;
+        }
+
+        .quiz-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 1rem 2rem;
             border: none;
             border-radius: 10px;
             font-size: 1.1rem;
             font-weight: bold;
             cursor: pointer;
-            transition: transform 0.3s;
+            transition: all 0.3s;
         }
 
-        .submit-btn:hover {
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-primary:hover:not(:disabled) {
             transform: scale(1.02);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-secondary {
+            background: #e0e0e0;
+            color: #666;
+        }
+
+        .btn-secondary:hover:not(:disabled) {
+            background: #d0d0d0;
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
         }
 
         .result {
             display: none;
             text-align: center;
             padding: 2rem;
-            background: white;
-            border-radius: 20px;
-            margin-top: 2rem;
         }
 
         .result.show {
             display: block;
+            animation: slideIn 0.5s ease;
         }
 
         .risk-score {
-            font-size: 4rem;
+            font-size: 5rem;
             font-weight: bold;
-            margin: 1rem 0;
+            margin: 2rem 0;
         }
 
         .risk-low { color: #22c55e; }
         .risk-medium { color: #f59e0b; }
         .risk-high { color: #ef4444; }
+
+        .result h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .result h4 {
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+        }
+
+        .result p {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: #666;
+            margin-bottom: 2rem;
+        }
+
+        /* Testimonials Section */
+        .testimonials {
+            padding: 6rem 2rem;
+            background: #f8f9fa;
+        }
+
+        .testimonials .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .testimonials h2 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            color: #333;
+        }
+
+        .testimonial-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .testimonial-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            position: relative;
+        }
+
+        .testimonial-card::before {
+            content: '"';
+            position: absolute;
+            top: -10px;
+            left: 20px;
+            font-size: 5rem;
+            color: #667eea;
+            opacity: 0.2;
+        }
+
+        .testimonial-text {
+            font-style: italic;
+            margin-bottom: 1rem;
+            color: #555;
+        }
+
+        .testimonial-author {
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .testimonial-role {
+            font-size: 0.9rem;
+            color: #999;
+        }
+
+        /* FAQ Section */
+        .faq {
+            padding: 6rem 2rem;
+            background: white;
+        }
+
+        .faq .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .faq h2 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            color: #333;
+        }
+
+        .faq-item {
+            background: #f8f9fa;
+            margin-bottom: 1.5rem;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .faq-question {
+            padding: 1.5rem;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background 0.3s;
+        }
+
+        .faq-question:hover {
+            background: #e9ecef;
+        }
+
+        .faq-question::after {
+            content: '+';
+            font-size: 1.5rem;
+            color: #667eea;
+        }
+
+        .faq-question.active::after {
+            content: '−';
+        }
+
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+            padding: 0 1.5rem;
+            color: #666;
+        }
+
+        .faq-answer.show {
+            max-height: 500px;
+            padding: 0 1.5rem 1.5rem;
+        }
+
+        /* Newsletter Section */
+        .newsletter {
+            padding: 6rem 2rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-align: center;
+        }
+
+        .newsletter h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .newsletter p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+
+        .newsletter-form {
+            max-width: 500px;
+            margin: 0 auto;
+            display: flex;
+            gap: 1rem;
+        }
+
+        .newsletter-form input {
+            flex: 1;
+            padding: 1rem;
+            border: none;
+            border-radius: 50px;
+            font-size: 1rem;
+        }
+
+        .newsletter-form button {
+            padding: 1rem 2rem;
+            background: white;
+            color: #667eea;
+            border: none;
+            border-radius: 50px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .newsletter-form button:hover {
+            transform: scale(1.05);
+        }
 
         /* CTA Section */
         .cta-section {
@@ -403,6 +681,17 @@
             }
         }
 
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
         /* Mobile */
         @media (max-width: 768px) {
             .hero h1 {
@@ -420,6 +709,18 @@
             .quiz-container {
                 padding: 1.5rem;
             }
+
+            .newsletter-form {
+                flex-direction: column;
+            }
+
+            .stats-bar .container {
+                grid-template-columns: 1fr;
+            }
+
+            .quiz-buttons {
+                flex-direction: column;
+            }
         }
     </style>
 </head>
@@ -433,6 +734,7 @@
                 <li><a href="#problem">Problem</a></li>
                 <li><a href="#solution">Lösung</a></li>
                 <li><a href="#quiz">Test starten</a></li>
+                <li><a href="#faq">FAQ</a></li>
             </ul>
         </div>
     </nav>
@@ -447,366 +749,58 @@
         </div>
     </section>
 
+    <!-- Stats Bar -->
+    <section class="stats-bar">
+        <div class="container">
+            <div class="stat">
+                <div class="stat-number">50+</div>
+                <div class="stat-label">Tests durchgeführt</div>
+            </div>
+            <div class="stat">
+                <div class="stat-number">58%</div>
+                <div class="stat-label">Durchschnittliches KI-Risiko</div>
+            </div>
+            <div class="stat">
+                <div class="stat-number">85%</div>
+                <div class="stat-label">Finden es hilfreich</div>
+            </div>
+        </div>
+    </section>
+
     <!-- Problem Section -->
     <section class="problem" id="problem">
         <div class="container">
             <h2>Kennst du diese Sorgen?</h2>
             <div class="problem-grid">
                 <div class="problem-card">
-                    <div class="icon">🤖</div>
+                    <svg class="svg-icon" viewBox="0 0 24 24" fill="none" stroke="#667eea" stroke-width="2">
+                        <circle cx="12" cy="12" r="10"/>
+                        <path d="M8 14s1.5 2 4 2 4-2 4-2"/>
+                        <line x1="9" y1="9" x2="9.01" y2="9"/>
+                        <line x1="15" y1="9" x2="15.01" y2="9"/>
+                    </svg>
                     <h3>Wird KI meinen Job übernehmen?</h3>
                     <p>Die Angst vor Automatisierung ist real. Viele Jobs werden sich radikal verändern.</p>
                 </div>
                 <div class="problem-card">
-                    <div class="icon">🤔</div>
+                    <svg class="svg-icon" viewBox="0 0 24 24" fill="none" stroke="#667eea" stroke-width="2">
+                        <circle cx="12" cy="12" r="10"/>
+                        <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/>
+                        <line x1="12" y1="17" x2="12.01" y2="17"/>
+                    </svg>
                     <h3>Wie soll ich mich weiterentwickeln?</h3>
                     <p>Das Angebot an Weiterbildungen ist riesig – aber welche ist die richtige?</p>
                 </div>
                 <div class="problem-card">
-                    <div class="icon">🎯</div>
+                    <svg class="svg-icon" viewBox="0 0 24 24" fill="none" stroke="#667eea" stroke-width="2">
+                        <circle cx="12" cy="12" r="10"/>
+                        <path d="M16 16s-1.5-2-4-2-4 2-4 2"/>
+                        <line x1="9" y1="9" x2="9.01" y2="9"/>
+                        <line x1="15" y1="9" x2="15.01" y2="9"/>
+                    </svg>
                     <h3>Welcher Karriereweg passt zu mir?</h3>
                     <p>Berufliche Orientierung ist teuer und oft nicht individuell genug.</p>
                 </div>
             </div>
         </div>
     </section>
-
-    <!-- Solution Section -->
-    <section class="solution" id="solution">
-        <div class="container">
-            <h2>NextChapter ist deine Antwort</h2>
-            <p>Die erste ganzheitliche Plattform, die Menschen nicht nur Jobs vermittelt, sondern sie für die Zukunft fit macht.</p>
-            
-            <div class="features">
-                <div class="feature">
-                    <div class="icon">🤖</div>
-                    <h3>KI-Risiko-Check</h3>
-                    <p>Erfahre in 2 Minuten, wie zukunftssicher dein Job ist</p>
-                </div>
-                <div class="feature">
-                    <div class="icon">🎯</div>
-                    <h3>Karriere-Matching</h3>
-                    <p>Finde Wege, die zu deiner Persönlichkeit passen</p>
-                </div>
-                <div class="feature">
-                    <div class="icon">📚</div>
-                    <h3>Weiterbildung</h3>
-                    <p>Konkrete Kurs-Empfehlungen für deine Entwicklung</p>
-                </div>
-                <div class="feature">
-                    <div class="icon">💼</div>
-                    <h3>Job-Matching</h3>
-                    <p>Nicht nur Stellen, sondern passende Karrierewege</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Quiz Section -->
-    <section class="quiz-section" id="quiz">
-        <div class="container">
-            <h2>🤖 Wie KI-sicher ist dein Job?</h2>
-            <p>Finde es in 2 Minuten heraus</p>
-            
-            <div class="quiz-container">
-                <div class="progress-bar">
-                    <div class="progress-fill" id="progressBar" style="width: 0%"></div>
-                </div>
-
-                <form id="quizForm">
-                    <div class="question">
-                        <label>1. Was ist dein aktueller Job?</label>
-                        <input type="text" id="job" required placeholder="z.B. Document Processing Agent">
-                    </div>
-
-                    <div class="question">
-                        <label>2. Wie viel deiner Arbeit ist repetitiv (immer gleich)?</label>
-                        <div class="radio-group">
-                            <label class="radio-option">
-                                <input type="radio" name="q2" value="1" required>
-                                0-20% (sehr abwechslungsreich)
-                            </label>
-                            <label class="radio-option">
-                                <input type="radio" name="q2" value="2">
-                                20-50% (teilweise gleich)
-                            </label>
-                            <label class="radio-option">
-                                <input type="radio" name="q2" value="3">
-                                50-80% (meist gleich)
-                            </label>
-                            <label class="radio-option">
-                                <input type="radio" name="q2" value="4">
-                                80-100% (immer gleich)
-                            </label>
-                        </div>
-                    </div>
-
-                    <div class="question">
-                        <label>3. Arbeitest du hauptsächlich mit...</label>
-                        <div class="radio-group">
-                            <label class="radio-option">
-                                <input type="radio" name="q3" value="1" required>
-                                Menschen (Kunden, Beratung)
-                            </label>
-                            <label class="radio-option">
-                                <input type="radio" name="q3" value="4">
-                                Daten/Dokumenten (Verarbeitung)
-                            </label>
-                            <label class="radio-option">
-                                <input type="radio" name="q3" value="2">
-                                Maschinen/Systemen
-                            </label>
-                            <label class="radio-option">
-                                <input type="radio" name="q3" value="1">
-                                Kreativität (Design, Konzepte)
-                            </label>
-                        </div>
-                    </div>
-
-                    <div class="question">
-                        <label>4. Wie viel Entscheidungsfreiheit hast du?</label>
-                        <div class="radio-group">
-                            <label class="radio-option">
-                                <input type="radio" name="q4" value="1" required>
-                                Sehr viel (eigenständig)
-                            </label>
-                            <label class="radio-option">
-                                <input type="radio" name="q4" value="2">
-                                Mittel (klare Regeln, aber Spielraum)
-                            </label>
-                            <label class="radio-option">
-                                <input type="radio" name="q4" value="3">
-                                Wenig (feste Prozesse)
-                            </label>
-                            <label class="radio-option">
-                                <input type="radio" name="q4" value="4">
-                                Keine (strikte Anweisungen)
-                            </label>
-                        </div>
-                    </div>
-
-                    <div class="question">
-                        <label>5. Wie komplex sind deine Aufgaben?</label>
-                        <div class="radio-group">
-                            <label class="radio-option">
-                                <input type="radio" name="q5" value="1" required>
-                                Sehr komplex (jahrelange Erfahrung nötig)
-                            </label>
-                            <label class="radio-option">
-                                <input type="radio" name="q5" value="2">
-                                Mittel (Einarbeitung nötig)
-                            </label>
-                            <label class="radio-option">
-                                <input type="radio" name="q5" value="3">
-                                Einfach (1-2 Wochen)
-                            </label>
-                            <label class="radio-option">
-                                <input type="radio" name="q5" value="4">
-                                Sehr einfach (jeder kann es lernen)
-                            </label>
-                        </div>
-                    </div>
-
-                    <div class="question">
-                        <label>6. Wie wichtig ist Empathie in deinem Job?</label>
-                        <div class="radio-group">
-                            <label class="radio-option">
-                                <input type="radio" name="q6" value="1" required>
-                                Extrem wichtig (Hauptbestandteil)
-                            </label>
-                            <label class="radio-option">
-                                <input type="radio" name="q6" value="2">
-                                Wichtig (regelmäßig nötig)
-                            </label>
-                            <label class="radio-option">
-                                <input type="radio" name="q6" value="3">
-                                Etwas wichtig (manchmal)
-                            </label>
-                            <label class="radio-option">
-                                <input type="radio" name="q6" value="4">
-                                Unwichtig (kaum Kontakt)
-                            </label>
-                        </div>
-                    </div>
-
-                    <div class="question">
-                        <label>7. Könntest du remote arbeiten?</label>
-                        <div class="radio-group">
-                            <label class="radio-option">
-                                <input type="radio" name="q7" value="3" required>
-                                Ja, komplett
-                            </label>
-                            <label class="radio-option">
-                                <input type="radio" name="q7" value="2">
-                                Teilweise
-                            </label>
-                            <label class="radio-option">
-                                <input type="radio" name="q7" value="1">
-                                Nein, muss vor Ort sein
-                            </label>
-                        </div>
-                    </div>
-
-                    <div class="question">
-                        <label>8. Wie stark ist dein Job digitalisiert?</label>
-                        <div class="radio-group">
-                            <label class="radio-option">
-                                <input type="radio" name="q8" value="4" required>
-                                Voll digital (alles am Computer)
-                            </label>
-                            <label class="radio-option">
-                                <input type="radio" name="q8" value="2">
-                                Teilweise (Mix)
-                            </label>
-                            <label class="radio-option">
-                                <input type="radio" name="q8" value="1">
-                                Kaum digital (offline)
-                            </label>
-                        </div>
-                    </div>
-
-                    <div class="question">
-                        <label>9. Berufserfahrung?</label>
-                        <div class="radio-group">
-                            <label class="radio-option">
-                                <input type="radio" name="q9" value="3" required>
-                                0-2 Jahre
-                            </label>
-                            <label class="radio-option">
-                                <input type="radio" name="q9" value="2">
-                                3-5 Jahre
-                            </label>
-                            <label class="radio-option">
-                                <input type="radio" name="q9" value="1">
-                                6-10 Jahre
-                            </label>
-                            <label class="radio-option">
-                                <input type="radio" name="q9" value="1">
-                                10+ Jahre
-                            </label>
-                        </div>
-                    </div>
-
-                    <div class="question">
-                        <label>10. Deine E-Mail (für Ergebnis):</label>
-                        <input type="email" id="email" required placeholder="deine@email.de">
-                    </div>
-
-                    <button type="submit" class="submit-btn">Ergebnis erhalten</button>
-                </form>
-
-                <div class="result" id="result">
-                    <h3>Dein KI-Risiko:</h3>
-                    <div class="risk-score" id="riskScore">0%</div>
-                    <h4 id="riskLevel"></h4>
-                    <p id="recommendation"></p>
-                    <br>
-                    <a href="mailto:hallo@nextchapter.de?subject=Beta-Zugang NextChapter&body=Hi! Ich habe gerade den KI-Risiko-Check gemacht. Mein Job: [Job] | Mein Score: [Score]%. Ich möchte gerne Beta-Tester werden!" class="cta-button">
-                        Beta-Zugang sichern
-                    </a>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- CTA Section -->
-    <section class="cta-section">
-        <div class="container">
-            <h2>Sei einer der Ersten</h2>
-            <p>Die ersten 100 Beta-Tester bekommen lebenslang 50% Rabatt</p>
-            <a href="mailto:hallo@nextchapter.de?subject=Beta-Zugang NextChapter" class="cta-button">
-                Jetzt Beta-Zugang sichern
-            </a>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer>
-        <div class="container">
-            <div class="logo">NextChapter</div>
-            <p class="tagline">Out of Rostock. For Everyone.</p>
-            <p>📧 hallo@nextchapter.de</p>
-            <p style="margin-top: 2rem; opacity: 0.6;">© 2026 NextChapter. Gebaut in Rostock.</p>
-        </div>
-    </footer>
-
-    <script>
-        // Progress Bar
-        const form = document.getElementById('quizForm');
-        const inputs = form.querySelectorAll('input[type="radio"], input[type="text"], input[type="email"]');
-        const progressBar = document.getElementById('progressBar');
-
-        function updateProgress() {
-            const total = 10;
-            let answered = 0;
-            
-            if (document.getElementById('job').value) answered++;
-            if (document.getElementById('email').value) answered++;
-            
-            for (let i = 2; i <= 9; i++) {
-                if (document.querySelector(`input[name="q${i}"]:checked`)) answered++;
-            }
-            
-            const progress = (answered / total) * 100;
-            progressBar.style.width = progress + '%';
-        }
-
-        inputs.forEach(input => {
-            input.addEventListener('change', updateProgress);
-            input.addEventListener('input', updateProgress);
-        });
-
-        // Form Submit
-        form.addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            // Calculate score
-            let score = 0;
-            for (let i = 2; i <= 9; i++) {
-                const answer = document.querySelector(`input[name="q${i}"]:checked`);
-                if (answer) score += parseInt(answer.value);
-            }
-            
-            const maxScore = 28;
-            const riskPercent = Math.round((score / maxScore) * 100);
-            
-            // Display result
-            document.getElementById('riskScore').textContent = riskPercent + '%';
-            
-            let level, levelClass, recommendation;
-            
-            if (riskPercent < 35) {
-                level = '✅ Geringes Risiko';
-                levelClass = 'risk-low';
-                recommendation = 'Dein Job ist ziemlich sicher! KI wird dich eher unterstützen als ersetzen. Bleib dennoch am Ball mit Weiterbildung.';
-            } else if (riskPercent < 65) {
-                level = '⚠️ Mittleres Risiko';
-                levelClass = 'risk-medium';
-                recommendation = 'Einige Teile deines Jobs könnten automatisiert werden. Jetzt ist der richtige Zeitpunkt, dich weiterzuentwickeln!';
-            } else {
-                level = '🚨 Hohes Risiko';
-                levelClass = 'risk-high';
-                recommendation = 'Große Teile deines Jobs könnten in den nächsten 3-5 Jahren automatisiert werden. Lass uns gemeinsam deinen nächsten Karriereschritt planen!';
-            }
-            
-            document.getElementById('riskScore').className = 'risk-score ' + levelClass;
-            document.getElementById('riskLevel').textContent = level;
-            document.getElementById('recommendation').textContent = recommendation;
-            
-            document.getElementById('result').classList.add('show');
-            document.getElementById('result').scrollIntoView({ behavior: 'smooth' });
-        });
-
-        // Smooth Scroll
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({ behavior: 'smooth' });
-                }
-            });
-        });
-    </script>
-</body>
-</html>
