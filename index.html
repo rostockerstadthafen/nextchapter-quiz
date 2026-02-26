@@ -213,4 +213,305 @@
             color: #333;
             padding: 2.5rem;
             border-radius: 20px;
-            box-shadow: 0 20px 60px rgba(0,0
+            box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+            min-height: 450px;
+            position: relative;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #eee;
+            border-radius: 10px;
+            margin-bottom: 2rem;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: #667eea;
+            width: 0%;
+            transition: width 0.4s ease;
+            border-radius: 10px;
+        }
+
+        .question {
+            display: none;
+        }
+
+        .question.active {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+
+        .radio-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+            margin-top: 1.5rem;
+        }
+
+        .radio-option {
+            padding: 1rem;
+            border: 2px solid #eee;
+            border-radius: 10px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: 0.3s;
+        }
+
+        .radio-option:hover {
+            border-color: #667eea;
+        }
+
+        .radio-option.selected {
+            border-color: #667eea;
+            background: #f0f4ff;
+        }
+
+        .quiz-buttons {
+            margin-top: 2rem;
+            display: flex;
+            gap: 1rem;
+        }
+
+        .btn {
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            flex: 1;
+        }
+
+        .btn-primary { background: #667eea; color: white; }
+        .btn-secondary { background: #eee; }
+
+        #result-container {
+            display: none;
+            text-align: center;
+        }
+
+        .risk-score {
+            font-size: 4rem;
+            font-weight: bold;
+            margin: 1rem 0;
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @media (max-width: 600px) {
+            .hero h1 { font-size: 2.2rem; }
+            .quiz-container { padding: 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="container">
+            <div class="logo">NextChapter</div>
+            <ul class="nav-links">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#problem">Problem</a></li>
+                <li><a href="#quiz">KI-Check</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <section class="hero" id="home">
+        <div class="container">
+            <h1>Dein nächstes Kapitel startet hier.</h1>
+            <p>Mach deine Karriere zukunftssicher – mit KI-Check und dem perfekten Job-Match.</p>
+            <div class="tagline">Out of Rostock. For Everyone.</div>
+            <a href="#quiz" class="cta-button">Jetzt Risiko checken</a>
+        </div>
+    </section>
+
+    <section class="stats-bar">
+        <div class="container">
+            <div class="stat"><div class="stat-number">1.200+</div><div class="stat-label">Analysen</div></div>
+            <div class="stat"><div class="stat-number">62%</div><div class="stat-label">KI-Potenzial</div></div>
+            <div class="stat"><div class="stat-number">100%</div><div class="stat-label">Kostenlos</div></div>
+        </div>
+    </section>
+
+    <section class="problem" id="problem">
+        <div class="container">
+            <h2>Die Welt verändert sich</h2>
+            <div class="problem-grid">
+                <div class="problem-card">
+                    <h3>Automatisierung</h3>
+                    <p>Routineaufgaben werden zunehmend von Algorithmen übernommen.</p>
+                </div>
+                <div class="problem-card">
+                    <h3>Neue Skills</h3>
+                    <p>Kreativität und Empathie werden wichtiger als reine Datenverarbeitung.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="quiz-section" id="quiz">
+        <div class="container">
+            <div class="quiz-container">
+                <div id="quiz-flow">
+                    <div class="progress-bar"><div class="progress-fill" id="progress"></div></div>
+                    <p id="counter">Frage 1 von 5</p>
+                    
+                    <form id="quizForm">
+                        <div class="question active" data-step="1">
+                            <h3>Wie viel deiner täglichen Arbeit besteht aus Dateneingabe oder Berichten?</h3>
+                            <div class="radio-group">
+                                <label class="radio-option"><input type="radio" name="q1" value="4"> Fast alles</label>
+                                <label class="radio-option"><input type="radio" name="q1" value="2"> Etwa die Hälfte</label>
+                                <label class="radio-option"><input type="radio" name="q1" value="0"> Kaum etwas</label>
+                            </div>
+                        </div>
+                        <div class="question" data-step="2">
+                            <h3>Wie oft musst du komplexe zwischenmenschliche Konflikte lösen?</h3>
+                            <div class="radio-group">
+                                <label class="radio-option"><input type="radio" name="q2" value="0"> Täglich</label>
+                                <label class="radio-option"><input type="radio" name="q2" value="2"> Gelegentlich</label>
+                                <label class="radio-option"><input type="radio" name="q2" value="4"> Fast nie</label>
+                            </div>
+                        </div>
+                        <div class="question" data-step="3">
+                            <h3>Erfordert dein Job körperliche Präsenz an wechselnden Orten?</h3>
+                            <div class="radio-group">
+                                <label class="radio-option"><input type="radio" name="q3" value="0"> Ja, ständig</label>
+                                <label class="radio-option"><input type="radio" name="q3" value="2"> Manchmal</label>
+                                <label class="radio-option"><input type="radio" name="q3" value="4"> Nein, reiner Bildschirmjob</label>
+                            </div>
+                        </div>
+                        <div class="question" data-step="4">
+                            <h3>Wie standardisiert sind deine Arbeitsabläufe?</h3>
+                            <div class="radio-group">
+                                <label class="radio-option"><input type="radio" name="q4" value="4"> Es gibt für alles ein festes Schema</label>
+                                <label class="radio-option"><input type="radio" name="q4" value="2"> Teils/Teils</label>
+                                <label class="radio-option"><input type="radio" name="q4" value="0"> Jeder Tag ist komplett unvorhersehbar</label>
+                            </div>
+                        </div>
+                        <div class="question" data-step="5">
+                            <h3>Wie oft nutzt du bereits KI-Tools (ChatGPT, etc.)?</h3>
+                            <div class="radio-group">
+                                <label class="radio-option"><input type="radio" name="q5" value="0"> Ich bin bereits Profi darin</label>
+                                <label class="radio-option"><input type="radio" name="q5" value="2"> Ich probiere es gerade aus</label>
+                                <label class="radio-option"><input type="radio" name="q5" value="4"> Bisher gar nicht</label>
+                            </div>
+                        </div>
+
+                        <div class="quiz-buttons">
+                            <button type="button" class="btn btn-secondary" id="prevBtn" style="display:none">Zurück</button>
+                            <button type="button" class="btn btn-primary" id="nextBtn">Weiter</button>
+                        </div>
+                    </form>
+                </div>
+
+                <div id="result-container">
+                    <h2>Dein Ergebnis</h2>
+                    <div class="risk-score" id="score-val">0%</div>
+                    <h3 id="risk-label">Mittleres Risiko</h3>
+                    <p id="risk-desc" style="margin: 1.5rem 0; color: #666;"></p>
+                    <button class="cta-button" onclick="location.reload()">Test wiederholen</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2026 NextChapter - Made with ❤️ in Rostock</p>
+    </footer>
+
+    <script>
+        const questions = document.querySelectorAll('.question');
+        const nextBtn = document.getElementById('nextBtn');
+        const prevBtn = document.getElementById('prevBtn');
+        const progress = document.getElementById('progress');
+        const counter = document.getElementById('counter');
+        let currentStep = 0;
+
+        // UI Update: Radio Selection Highlight
+        document.querySelectorAll('.radio-option').forEach(opt => {
+            opt.addEventListener('click', () => {
+                const parent = opt.parentElement;
+                parent.querySelectorAll('.radio-option').forEach(r => r.classList.remove('selected'));
+                opt.classList.add('selected');
+                opt.querySelector('input').checked = true;
+            });
+        });
+
+        nextBtn.addEventListener('click', () => {
+            const currentQ = questions[currentStep];
+            const selected = currentQ.querySelector('input:checked');
+            
+            if (!selected) {
+                alert("Bitte wähle eine Option aus!");
+                return;
+            }
+
+            if (currentStep < questions.length - 1) {
+                currentQ.classList.remove('active');
+                currentStep++;
+                questions[currentStep].classList.add('active');
+                updateUI();
+            } else {
+                showResults();
+            }
+        });
+
+        prevBtn.addEventListener('click', () => {
+            questions[currentStep].classList.remove('active');
+            currentStep--;
+            questions[currentStep].classList.add('active');
+            updateUI();
+        });
+
+        function updateUI() {
+            counter.innerText = `Frage ${currentStep + 1} von ${questions.length}`;
+            progress.style.width = `${((currentStep) / (questions.length - 1)) * 100}%`;
+            prevBtn.style.display = currentStep === 0 ? 'none' : 'block';
+            nextBtn.innerText = currentStep === questions.length - 1 ? 'Ergebnis anzeigen' : 'Weiter';
+        }
+
+        function showResults() {
+            let score = 0;
+            const answers = document.querySelectorAll('input:checked');
+            answers.forEach(a => score += parseInt(a.value));
+
+            // Max Score ist 20 (5 Fragen * 4 Punkte)
+            const percentage = (score / 20) * 100;
+            
+            document.getElementById('quiz-flow').style.display = 'none';
+            document.getElementById('result-container').style.display = 'block';
+            document.getElementById('score-val').innerText = percentage + "%";
+
+            const desc = document.getElementById('risk-desc');
+            const label = document.getElementById('risk-label');
+
+            if (percentage < 40) {
+                label.innerText = "Niedriges Risiko ✅";
+                label.style.color = "#22c55e";
+                desc.innerText = "Dein Job erfordert viel menschliche Intuition oder physische Flexibilität. KI ist für dich eher ein Werkzeug als eine Gefahr.";
+            } else if (percentage < 70) {
+                label.innerText = "Mittleres Risiko ⚠️";
+                label.style.color = "#f59e0b";
+                desc.innerText = "Teile deines Jobs könnten automatisiert werden. Es ist ein guter Zeitpunkt, dich mit KI-Tools vertraut zu machen.";
+            } else {
+                label.innerText = "Hohes Risiko 🚨";
+                label.style.color = "#ef4444";
+                desc.innerText = "Dein Tätigkeitsfeld ist stark von Automatisierung betroffen. Nutze NextChapter, um frühzeitig neue Skills zu lernen!";
+            }
+        }
+    </script>
+</body>
+</html>
