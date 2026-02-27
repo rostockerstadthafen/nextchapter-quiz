@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>NextChapter | KI-Karriere Check Rostock</title>
+    <meta name="description" content="Wie sicher ist dein Job 2026? Analysiere dein KI-Risiko anonym und datenbasiert. Spezialisiert auf den Standort Rostock.">
+    <meta property="og:title" content="NextChapter | KI-Job-Check">
+    <meta property="og:description" content="Wie sicher ist dein Job? Finde es in 2 Minuten heraus.">
+    
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <style>
+        :root {
+            --primary: #3b82f6; --secondary: #06b6d4;
+            --text: #1e293b; --muted: #64748b; --bg: #f8fafc;
+            --success: #22c55e; --warning: #f59e0b; --danger: #ef4444;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', -apple-system, sans-serif; }
+        html { scroll-behavior: smooth; }
+        body { background: white; color: var(--text); line-height: 1.6; overflow-x: hidden; }
+
+        /* ROTER LAUFBANNER */
+        .top-ticker {
+            background: var(--danger);
+            color: white;
+            overflow: hidden;
+            white-space: nowrap;
+            position: fixed;
+            top: 0; width: 100%; z-index: 2100;
+            height: 30px; display: flex; align-items: center;
+            font-size: 0.75rem; font-weight: 800; letter-spacing: 1px;
+        }
+
+        .ticker-content {
+            display: inline-block;
+            padding-left: 100%;
+            animation: ticker 25s linear infinite;
+        }
+
+        @keyframes ticker {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(-100%, 0); }
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed; width: 100%; padding: 1rem 2rem; background: rgba(255,255,255,0.95);
+            backdrop-filter: blur(12px); border-bottom: 1px solid #e2e8f0; z-index: 1000;
+            display: flex; justify-content: space-between; align-items: center;
+            top: 30px;
+        }
+        .logo { font-weight: 900; font-size: 1.5rem; color: var(--primary); text-decoration: none; }
+        .nav-right { display: flex; align-items: center; gap: 1rem; }
+        .lang-btn { background: #f1f5f9; border: 1px solid #e2e8f0; padding: 0.5rem 0.8rem; border-radius: 10px; cursor: pointer; font-weight: 700; font-size: 0.8rem; }
+
+        /* Hero & Sections */
+        section { padding: 6rem 1.5rem; }
+        .container { max-width: 1100px; margin: 0 auto; }
+        
+        .hero { min-height: 85vh; display: flex; align-items: center; justify-content: center; text-align: center; background: radial-gradient(circle at top, #e0f2fe, white); padding-top: 5rem; }
+        .hero h1 { font-size: clamp(2.5rem, 8vw, 4.5rem); font-weight: 900; line-height: 1.1; margin-bottom: 1.5rem; }
+        .gradient { background: linear-gradient(135deg, var(--primary), var(--secondary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+
+        .btn { padding: 1rem 2.5rem; background: var(--primary); color: white; border: none; border-radius: 50px; font-weight: 700; cursor: pointer; transition: 0.3s; text-decoration: none; display: inline-block; }
+        .btn:hover { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(59,130,246,0.2); }
+
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; }
+
+        /* Trends Barometer */
+        .bar-container { margin-bottom: 1.5rem; }
+        .bar-bg { height: 8px; background: #f1f5f9; border-radius: 10px; overflow: hidden; margin-top: 0.5rem; }
+        .bar-fill { height: 100%; width: 0%; transition: width 2s ease-out; }
+
+        /* Cards */
+        .card { background: white; padding: 2.5rem; border-radius: 24px; border: 1px solid #e2e8f0; transition: 0.3s; }
+        .premium { border: 2px solid var(--primary); position: relative; box-shadow: 0 20px 40px rgba(0,0,0,0.05); }
+        .badge { position: absolute; top: -12px; left: 50%; transform: translateX(-50%); background: var(--primary); color: white; padding: 4px 12px; border-radius: 20px; font-size: 0.7rem; font-weight: 800; }
+
+        /* Modal */
+        .modal {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(15, 23, 42, 0.9); backdrop-filter: blur(10px); z-index: 2000;
+            align-items: center; justify-content: center; padding: 1rem;
+        }
+        .modal.show { display: flex; }
+        .modal-content { background: white; width: 100%; max-width: 850px; border-radius: 30px; padding: 3rem; position: relative; max-height: 95vh; overflow-y: auto; }
+        
+        .option { width: 100%; padding: 1.2rem; margin: 0.8rem 0; border: 2px solid #f1f5f9; border-radius: 16px; text-align: left; cursor: pointer; display: flex; align-items: center; gap: 1rem; transition: 0.2s; font-weight: 600; }
+        .option:hover { border-color: var(--primary); background: #f0f7ff; }
+
+        /* Warteliste & Produktbox */
+        .product-box { background: #0f172a; color: white; padding: 2rem; border-radius: 24px; margin-top: 2rem; display: flex; align-items: center; gap: 2rem; flex-wrap: wrap; text-align: left; }
+        #waitlist-form { display: none; margin-top: 1.5rem; padding: 2rem; background: #f0f7ff; border: 2px dashed var(--primary); border-radius: 20px; text-align: left; }
+        input[type="email"] { width: 100%; padding: 1rem; border-radius: 12px; border: 1px solid #cbd5e1; margin: 1rem 0; font-size: 1rem; }
+    </style>
+</head>
+<body>
+
+    <div class="top-ticker">
+        <div class="ticker-content" data-t="ticker_text">
+            +++ ACHTUNG: SEITE IM AUFBAU +++ TESTBETRIEB 2026 +++ SERVICE NOCH NICHT VOLLSTÄNDIG VERFÜGBAR +++
+        </div>
+    </div>
+
+    <nav>
+        <div class="logo">NextChapter</div>
+        <div class="nav-right">
+            <button class="lang-btn" id="langBtn" onclick="toggleLang()">EN</button>
+            <button class="btn" style="padding: 0.6rem 1.2rem; font-size: 0.8rem;" onclick="openQuiz()" data-t="nav_cta">KI-CHECK</button>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <div class="container">
+            <div style="display: inline-block; padding: 0.5rem 1rem; background: #dbeafe; color: var(--primary); border-radius: 50px; font-weight: 700; font-size: 0.8rem; margin-bottom: 1.5rem;" data-t="hero_tag">ROSTOCK | 2026 EDITION</div>
+            <h1 data-t="hero_h1">Dein Job. <span class="gradient">Deine Zukunft.</span></h1>
+            <p data-t="hero_p" style="font-size: 1.2rem; color: var(--muted); margin-bottom: 2.5rem; max-width: 650px; margin: 0 auto 2.5rem;">
+                Analysiere dein persönliches KI-Risiko sofort. Datenbasiert, anonym und für den Norden optimiert.
+            </p>
+            <button class="btn" onclick="openQuiz()" data-t="hero_btn">Check kostenlos starten</button>
+        </div>
+    </section>
+
+    <section id="trends" style="background: var(--bg);">
+        <div class="container">
+            <h2 data-t="trends_h2" style="text-align: center; margin-bottom: 3rem;">Markttrends Rostock 2026</h2>
+            <div class="grid">
+                <div class="card">
+                    <h4 style="color: var(--success); margin-bottom: 1.5rem;"><i data-lucide="trending-up"></i> Growing Skills</h4>
+                    <div class="bar-container">
+                        <div style="display: flex; justify-content: space-between; font-weight: 700; font-size: 0.9rem;"><span>AI-Strategy</span><span>88%</span></div>
+                        <div class="bar-bg"><div class="bar-fill" style="background: var(--success); width: 88%;"></div></div>
+                    </div>
+                    <div class="bar-container">
+                        <div style="display: flex; justify-content: space-between; font-weight: 700; font-size: 0.9rem;"><span>Empathy</span><span>74%</span></div>
+                        <div class="bar-bg"><div class="bar-fill" style="background: var(--success); width: 74%;"></div></div>
+                    </div>
+                </div>
+                <div class="card">
+                    <h4 style="color: var(--danger); margin-bottom: 1.5rem;"><i data-lucide="trending-down"></i> High Risk Areas</h4>
+                    <div class="bar-container">
+                        <div style="display: flex; justify-content: space-between; font-weight: 700; font-size: 0.9rem;"><span>Repetitive Admin</span><span>92%</span></div>
+                        <div class="bar-bg"><div class="bar-fill" style="background: var(--danger); width: 92%;"></div></div>
+                    </div>
+                    <div class="bar-container">
+                        <div style="display: flex; justify-content: space-between; font-weight: 700; font-size: 0.9rem;"><span>Standard Writing</span><span>84%</span></div>
+                        <div class="bar-bg"><div class="bar-fill" style="background: var(--danger); width: 84%;"></div></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <div class="container">
+            <div class="grid" style="margin-bottom: 4rem;">
+                <div>
+                    <h2 data-t="about_h2">Das sind wir.</h2>
+                    <p data-t="about_p" style="color: var(--muted); margin-top: 1rem;">Wir sind Experten aus Rostock, die Karriereberatung mit modernster Datenanalyse verbinden. Wir verkaufen keine Daten, sondern Sicherheit.</p>
+                </div>
+                <div class="card premium">
+                    <div class="badge" data-t="badge_rec">EMPFEHLUNG</div>
+                    <h3 data-t="p2_name">Deep Dive Report</h3>
+                    <div style="font-size: 2.5rem; font-weight: 900; margin: 1rem 0;">29€</div>
+                    <ul style="list-style: none; font-size: 0.9rem; line-height: 2; margin-bottom: 1.5rem;" data-t="p2_list">
+                        <li>✓ 20-seitige Individual-Analyse</li>
+                        <li>✓ Konkrete KI-Toolbox für dich</li>
+                        <li>✓ Regionaler Gehalts-Check</li>
+                    </ul>
+                    <button class="btn" style="width: 100%;" onclick="openQuiz()" data-t="p2_btn">Interesse zeigen</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="modal" id="quizModal">
+        <div class="modal-content">
+            <button style="position: absolute; top: 1.5rem; right: 1.5rem; border: none; background: #f1f5f9; border-radius: 50%; width: 40px; height: 40px; cursor: pointer;" onclick="closeQuiz()"><i data-lucide="x"></i></button>
+            
+            <div id="quiz-view">
+                <h3 id="qtext" style="font-size: 1.6rem; margin-bottom: 2rem; text-align: center;"></h3>
+                <div id="opts"></div>
+            </div>
+
+            <div id="result-view" style="display: none; text-align: center;">
+                <h2 data-t="res_h2">Deine Risiko-Analyse</h2>
+                <div style="font-size: 4rem; font-weight: 900; color: var(--primary); margin: 1rem 0;" id="finalScore">0%</div>
+                <p id="resDesc" style="color: var(--muted); margin-bottom: 2rem;"></p>
+                
+                <div style="max-width: 300px; margin: 0 auto 2rem;">
+                    <canvas id="radarChart"></canvas>
+                </div>
+
+                <div id="premium-area">
+                    <div class="product-box">
+                        <div style="width: 80px; height: 110px; background: white; border-radius: 5px; color: var(--primary); display: flex; align-items: center; justify-content: center; font-weight: 900; box-shadow: 0 5px 15px rgba(0,0,0,0.2);">PDF</div>
+                        <div style="flex: 1;">
+                            <h4 data-t="prod_h4">Vollständiger Report</h4>
+                            <p data-t="prod_p" style="font-size: 0.8rem; opacity: 0.8; margin-bottom: 1rem;">Erhalte die komplette 20-seitige Strategie für deine Karriere.</p>
+                            <button class="btn" style="background: var(--primary); border: 1px solid white; padding: 0.5rem 1.5rem; font-size: 0.8rem;" onclick="showWaitlist()" data-t="prod_btn">Interesse zeigen (Beta)</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="waitlist-form">
+                    <h4 data-t="wait_h4">Coming Soon!</h4>
+                    <p style="font-size: 0.85rem;" data-t="wait_p">Der Report wird gerade finalisiert. Trag dich ein und erhalte 50% Rabatt zum Launch!</p>
+                    <input type="email" id="userEmail" placeholder="Deine E-Mail Adresse">
+                    <button class="btn" style="width: 100%;" onclick="submitInterest()" data-t="wait_btn">Auf die Warteliste</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer style="padding: 4rem 2rem; background: #0f172a; color: white; text-align: center;">
+        <p><strong>NextChapter Rostock (i.G.)</strong></p>
+        <p style="opacity: 0.5; font-size: 0.8rem; margin-top: 1rem;">Wir verkaufen keine Daten. Alle Eingaben sind anonym. | <span style="cursor:pointer" onclick="alert('Impressum: Vorname Nachname, Rostock (i.G.)')">Impressum</span></p>
+    </footer>
+
+    <script>
+        let curLang = 'DE';
+        let curIdx = 0;
+        let points = { strategy: 0, social: 0, routine: 0 };
+
+        const translations = {
+            DE: {
+                ticker_text: "+++ ACHTUNG: SEITE IM AUFBAU +++ TESTBETRIEB 2026 +++ SERVICE NOCH NICHT VOLLSTÄNDIG VERFÜGBAR +++",
+                nav_cta: "KI-CHECK", hero_tag: "ROSTOCK | 2026 EDITION",
+                hero_h1: "Dein Job. <span class='gradient'>Deine Zukunft.</span>",
+                hero_p: "Analysiere dein persönliches KI-Risiko sofort. Datenbasiert, anonym und für den Norden optimiert.",
+                hero_btn: "Check kostenlos starten", trends_h2: "Markttrends Rostock 2026",
+                about_h2: "Das sind wir.", about_p: "Wir sind Experten aus Rostock, die Karriereberatung mit modernster Datenanalyse verbinden. Wir verkaufen keine Daten, sondern Sicherheit.",
+                p2_name: "Deep Dive Report", p2_btn: "Interesse zeigen", badge_rec: "EMPFEHLUNG",
+                p2_list: "<li>✓ 20-seitige Individual-Analyse</li><li>✓ Konkrete KI-Toolbox für dich</li><li>✓ Regionaler Gehalts-Check</li>",
+                res_h2: "Deine Analyse", prod_h4: "Vollständiger Report", prod_p: "Erhalte die komplette 20-seitige Strategie für deine Karriere.",
+                prod_btn: "Interesse zeigen (Beta)", wait_h4: "Bald verfügbar!", 
+                wait_p: "Der Report wird gerade finalisiert. Trag dich ein und erhalte 50% Rabatt zum Launch!", wait_btn: "Auf die Warteliste",
+                q1: "Wie oft löst du unvorhersehbare Probleme?", q1_o: ["Täglich", "Manchmal", "Nie"],
+                q2: "Wie wichtig ist Empathie?", q2_o: ["Sehr wichtig", "Teils", "Kaum"],
+                q3: "Sind deine Aufgaben repetitiv?", q3_o: ["Nein", "Teils", "Ja, sehr"],
+                desc_low: "Sicherer Hafen. Deine menschlichen Fähigkeiten sind aktuell schwer ersetzbar.",
+                desc_high: "Handlungsbedarf. Viele deiner Aufgaben könnten bis 2027 automatisiert werden."
+            },
+            EN: {
+                ticker_text: "+++ ATTENTION: UNDER CONSTRUCTION +++ TEST MODE 2026 +++ SERVICE NOT FULLY AVAILABLE YET +++",
+                nav_cta: "AI-CHECK", hero_tag: "ROSTOCK | 2026 EDITION",
+                hero_h1: "Your Job. <span class='gradient'>Your Future.</span>",
+                hero_p: "Analyze your personal AI risk instantly. Data-driven, anonymous, and optimized for the north.",
+                hero_btn: "Start Free Check", trends_h2: "Rostock Trends 2026",
+                about_h2: "About us.", about_p: "We are experts from Rostock, combining career consulting with state-of-the-art data analysis. We don't sell data, we sell security.",
+                p2_name: "Deep Dive Report", p2_btn: "Show Interest", badge_rec: "RECOMMENDED",
+                p2_list: "<li>✓ 20-page individual analysis</li><li>✓ Concrete AI toolbox for you</li><li>✓ Regional salary check</li>",
+                res_h2: "Your Analysis", prod_h4: "Full Report", prod_p: "Get the complete 20-page strategy for your career.",
+                prod_btn: "Show interest (Beta)", wait_h4: "Coming Soon!", 
+                wait_p: "The report is being finalized. Join the waitlist for a 50% launch discount!", wait_btn: "Join Waitlist",
+                q1: "How often do you solve unpredictable problems?", q1_o: ["Daily", "Sometimes", "Never"],
+                q2: "How important is empathy?", q2_o: ["Crucial", "Somewhat", "Not much"],
+                q3: "Are your tasks repetitive?", q3_o: ["No", "Partially", "Yes, highly"],
+                desc_low: "Safe harbor. Your human skills are currently difficult to replace.",
+                desc_high: "Action needed. Many of your tasks could be automated by 2027."
+            }
+        };
+
+        function toggleLang() {
+            curLang = curLang === 'DE' ? 'EN' : 'DE';
+            document.getElementById('langBtn').textContent = curLang === 'DE' ? 'EN' : 'DE';
+            document.querySelectorAll('[data-t]').forEach(el => {
+                const key = el.getAttribute('data-t');
+                el.innerHTML = translations[curLang][key];
+            });
+            if(document.getElementById('quizModal').classList.contains('show')) renderQuestion();
+        }
+
+        function openQuiz() { document.getElementById('quizModal').classList.add('show'); renderQuestion(); }
+        function closeQuiz() { document.getElementById('quizModal').classList.remove('show'); }
+
+        function renderQuestion() {
+            const t = translations[curLang];
+            const qs = [
+                { q: t.q1, cat: "strategy", opts: t.q1_o, v: [0, 5, 10] },
+                { q: t.q2, cat: "social", opts: t.q2_o, v: [0, 5, 10] },
+                { q: t.q3, cat: "routine", opts: t.q3_o, v: [0, 5, 10] }
+            ];
+            const q = qs[curIdx];
+            document.getElementById('qtext').textContent = q.q;
+            const container = document.getElementById('opts');
+            container.innerHTML = '';
+            q.opts.forEach((opt, i) => {
+                const b = document.createElement('button');
+                b.className = 'option';
+                b.innerHTML = `<i data-lucide="chevron-right"></i> ${opt}`;
+                b.onclick = () => {
+                    points[q.cat] = q.v[i];
+                    if (curIdx < qs.length - 1) { curIdx++; renderQuestion(); }
+                    else { showResults(); }
+                };
+                container.appendChild(b);
+            });
+            lucide.createIcons();
+        }
+
+        function showResults() {
+            document.getElementById('quiz-view').style.display = 'none';
+            document.getElementById('result-view').style.display = 'block';
+            const score = Math.round(((points.strategy + points.social + points.routine) / 30) * 100);
+            document.getElementById('finalScore').textContent = score + "%";
+            document.getElementById('resDesc').textContent = score < 50 ? translations[curLang].desc_low : translations[curLang].desc_high;
+
+            new Chart(document.getElementById('radarChart'), {
+                type: 'radar',
+                data: {
+                    labels: ['Social', 'Strategy', 'Routine'],
+                    datasets: [{
+                        data: [10 - points.social, 10 - points.strategy, points.routine],
+                        backgroundColor: 'rgba(59, 130, 246, 0.2)', borderColor: '#3b82f6', borderWidth: 2
+                    }]
+                },
+                options: { 
+                    scales: { r: { min: 0, max: 10, ticks: { display: false } } },
+                    plugins: { legend: { display: false } }
+                }
+            });
+        }
+
+        function showWaitlist() {
+            document.getElementById('premium-area').style.display = 'none';
+            document.getElementById('waitlist-form').style.display = 'block';
+        }
+
+        function submitInterest() {
+            const email = document.getElementById('userEmail').value;
+            if(email.includes('@')) {
+                alert(curLang === 'DE' ? "Danke! Wir haben dich auf die Liste gesetzt." : "Thanks! We've added you to the list.");
+                location.reload();
+            } else {
+                alert(curLang === 'DE' ? "Bitte gib eine gültige E-Mail an." : "Please enter a valid email.");
+            }
+        }
+
+        lucide.createIcons();
+    </script>
+</body>
+</html>
