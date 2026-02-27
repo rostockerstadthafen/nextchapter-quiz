@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NextChapter | AI Career Solutions</title>
+    
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <style>
+        :root {
+            --nc-blue: #2563eb;
+            --nc-light-blue: #eff6ff;
+            --nc-dark-blue: #1e3a8a;
+            --text-dark: #1e293b;
+            --text-muted: #64748b;
+            --bg-white: #ffffff;
+            --bg-neutral: #f8fafc;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        body { background-color: var(--bg-white); color: var(--text-dark); line-height: 1.6; overflow-x: hidden; }
+
+        /* TICKER */
+        .top-ticker { background: var(--nc-blue); color: white; overflow: hidden; white-space: nowrap; position: fixed; top: 0; width: 100%; z-index: 2100; height: 35px; display: flex; align-items: center; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; }
+        .ticker-content { display: inline-block; padding-left: 100%; animation: ticker 35s linear infinite; }
+        @keyframes ticker { 0% { transform: translate(0, 0); } 100% { transform: translate(-100%, 0); } }
+
+        /* NAV */
+        nav { 
+            position: fixed; top: 35px; width: 100%; padding: 1.2rem 5%; 
+            background: rgba(255,255,255,0.95); backdrop-filter: blur(10px); 
+            display: flex; justify-content: space-between; align-items: center; 
+            z-index: 1000; border-bottom: 1px solid #e2e8f0;
+        }
+        .logo { font-weight: 900; font-size: 1.5rem; color: var(--text-dark); text-decoration: none; letter-spacing: -1px; }
+        .logo span { color: var(--nc-blue); }
+        .nav-controls { display: flex; gap: 1rem; align-items: center; }
+
+        .btn-lang { 
+            background: none; border: 1px solid #e2e8f0; padding: 0.5rem 0.8rem; 
+            border-radius: 8px; cursor: pointer; font-weight: 700; font-size: 0.8rem;
+            transition: 0.2s;
+        }
+        .btn-lang:hover { background: var(--bg-neutral); border-color: var(--nc-blue); }
+
+        /* HERO */
+        .hero { 
+            padding: 12rem 5% 8rem; min-height: 90vh; display: flex; align-items: center; 
+            background: linear-gradient(135deg, var(--bg-neutral) 0%, #ffffff 100%);
+        }
+        .hero-grid { display: grid; grid-template-columns: 1.2fr 1fr; gap: 5rem; max-width: 1200px; margin: 0 auto; align-items: center; }
+        .hero-text h1 { font-size: clamp(2.8rem, 6vw, 4.8rem); line-height: 1.05; margin-bottom: 2rem; font-weight: 900; color: var(--text-dark); letter-spacing: -2px; }
+        .hero-text p { font-size: 1.3rem; color: var(--text-muted); margin-bottom: 3rem; max-width: 650px; }
+        
+        .hero-img { width: 100%; border-radius: 30px; box-shadow: 0 30px 60px -12px rgba(0,0,0,0.1); filter: saturate(0.8); }
+
+        .btn-nc { 
+            background: var(--nc-blue); color: white; padding: 1.3rem 3rem; 
+            border-radius: 100px; border: none; font-weight: 700; font-size: 1.1rem; 
+            cursor: pointer; transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+            text-decoration: none; display: inline-block;
+            box-shadow: 0 15px 30px rgba(37, 99, 235, 0.2);
+        }
+        .btn-nc:hover { background: #1d4ed8; transform: translateY(-3px); box-shadow: 0 20px 40px rgba(37, 99, 235, 0.3); }
+
+        /* IMPACT */
+        .impact-section { padding: 8rem 5%; background: white; text-align: center; }
+        .impact-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2.5rem; max-width: 1200px; margin: 4rem auto 0; }
+        .impact-card { background: white; border-radius: 30px; overflow: hidden; border: 1px solid #e2e8f0; text-align: left; transition: 0.3s; }
+        .impact-card:hover { transform: translateY(-10px); box-shadow: 0 20px 40px rgba(0,0,0,0.05); border-color: var(--nc-blue); }
+        
+        .impact-img-container { background: #f1f5f9; height: 240px; overflow: hidden; }
+        .impact-img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(1) brightness(1.1) opacity(0.7); transition: 0.5s ease; }
+        .impact-card:hover .impact-img { filter: grayscale(0) opacity(1); transform: scale(1.05); }
+        .impact-content { padding: 2.5rem; }
+
+        /* OFFERS */
+        .offers { padding: 8rem 5%; background: var(--bg-neutral); text-align: center; }
+        .pricing-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; max-width: 1100px; margin: 4rem auto 0; }
+        .price-card { padding: 3rem 2rem; border-radius: 24px; border: 1px solid #e2e8f0; transition: 0.3s; background: white; text-align: left; }
+        .price-card.featured { border-color: var(--nc-blue); background: var(--nc-light-blue); transform: scale(1.05); }
+
+        /* MODAL */
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: white; z-index: 3000; padding: 2rem; align-items: center; justify-content: center; overflow-y: auto; }
+        .modal.show { display: flex; animation: fadeIn 0.4s ease; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .quiz-box { max-width: 600px; width: 100%; text-align: center; position: relative; }
+        .opt-btn { width: 100%; padding: 1.2rem; margin: 0.5rem 0; border: 2px solid #e2e8f0; border-radius: 15px; background: white; cursor: pointer; font-weight: 700; transition: 0.2s; }
+        .opt-btn:hover { border-color: var(--nc-blue); background: var(--nc-light-blue); }
+
+        footer { padding: 6rem 5%; background: var(--bg-neutral); text-align: center; border-top: 1px solid #e2e8f0; }
+
+        @media (max-width: 992px) { .hero-grid { grid-template-columns: 1fr; text-align: center; } }
+    </style>
+</head>
+<body>
+
+    <div class="top-ticker" id="ticker">
+        <div class="ticker-content" data-t="ticker">+++ NEXTCHAPTER 2026 +++ KI-REVOLUTION IM ARBEITSMARKT +++ JETZT KOSTENLOS ANALYSIEREN +++</div>
+    </div>
+
+    <nav>
+        <a href="#" class="logo">Next<span>Chapter</span></a>
+        <div class="nav-controls">
+            <button class="btn-lang" onclick="toggleLang()" id="langBtn">EN</button>
+            <button class="btn-nc" style="padding: 0.7rem 1.5rem; font-size: 0.85rem;" onclick="openQuiz()" data-t="nav_cta">Gratis KI-Check</button>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <div class="hero-grid">
+            <div class="hero-text">
+                <div style="display: inline-block; padding: 0.4rem 1rem; background: var(--nc-light-blue); color: var(--nc-blue); border-radius: 50px; font-weight: 700; font-size: 0.75rem; margin-bottom: 1.5rem;" data-t="hero_badge">BETA RELEASE 2026</div>
+                <h1 data-t="hero_h1">Predict your<br><span style="color:var(--nc-blue)">Next Chapter.</span></h1>
+                <p data-t="hero_p">Wirst du 2027 noch gebraucht? Erhalte eine präzise KI-Risikoanalyse deiner Karriere. Basierend auf Echtzeit-Daten und Automatisierungstrends.</p>
+                <button class="btn-nc" onclick="openQuiz()" data-t="hero_btn">Jetzt Risiko-Check starten</button>
+            </div>
+            <div class="hero-img-container">
+                <img src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80&w=1000" class="hero-img" alt="AI Network">
+            </div>
+        </div>
+    </section>
+
+    <section class="impact-section">
+        <h2 style="font-size: 2.2rem; font-weight: 900;" data-t="impact_title">DER NEUE STANDARD</h2>
+        <div class="impact-grid">
+            <div class="impact-card">
+                <div class="impact-img-container"><img src="https://images.unsplash.com/photo-1497215728101-856f4ea42174?auto=format&fit=crop&q=80&w=800" class="impact-img"></div>
+                <div class="impact-content">
+                    <h3 data-t="card1_h">Anonymität</h3>
+                    <p data-t="card1_p">Keine Anmeldung. Deine Eingaben werden nur für die Analyse genutzt und nicht gespeichert.</p>
+                </div>
+            </div>
+            <div class="impact-card">
+                <div class="impact-img-container"><img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&q=80&w=800" class="impact-img"></div>
+                <div class="impact-content">
+                    <h3 data-t="card2_h">Präzision</h3>
+                    <p data-t="card2_p">Unsere Algorithmen nutzen Automatisierungstrends und Marktdaten für Deutschland 2026.</p>
+                </div>
+            </div>
+            <div class="impact-card">
+                <div class="impact-img-container"><img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80&w=800" class="impact-img"></div>
+                <div class="impact-content">
+                    <h3 data-t="card3_h">Echtzeit</h3>
+                    <p data-t="card3_p">Erhalte dein Ergebnis und deinen individuellen Action-Plan in unter 2 Minuten.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="offers">
+        <h2 style="font-size: 2.2rem; font-weight: 900;" data-t="offers_h">Unsere Lösungen</h2>
+        <div class="pricing-grid">
+            <div class="price-card">
+                <h3 data-t="p1_h">Starter Check</h3>
+                <div class="price">0€</div>
+                <button class="opt-btn" onclick="openQuiz()" data-t="p_btn">Gratis starten</button>
+            </div>
+            <div class="price-card featured">
+                <h3 data-t="p2_h">Deep Dive Report</h3>
+                <div class="price">49€</div>
+                <button class="btn-nc" style="width: 100%; border-radius: 12px;" onclick="openQuiz()" data-t="p_btn2">Report anfordern</button>
+            </div>
+            <div class="price-card">
+                <h3 data-t="p3_h">Corporate</h3>
+                <div class="price" data-t="p3_price">Kontakt</div>
+                <button class="opt-btn" data-t="p_btn3">Anfrage senden</button>
+            </div>
+        </div>
+    </section>
+
+    <div class="modal" id="quizModal">
+        <div class="quiz-box">
+            <button style="position: absolute; top: -2rem; right: 0; background:none; border:none; cursor:pointer;" onclick="closeQuiz()"><i data-lucide="x" size="32"></i></button>
+            <div id="quiz-view">
+                <h2 id="qtext" style="margin-bottom: 2rem; font-weight: 900;"></h2>
+                <div id="opts"></div>
+            </div>
+            <div id="result-view" style="display:none;">
+                <h2 data-t="res_h">DEIN KI-SCORE</h2>
+                <div id="finalScore" style="font-size: 5rem; font-weight: 900; color: var(--nc-blue); margin: 1rem 0;">--%</div>
+                <div style="max-width: 280px; margin: 0 auto 2rem;"><canvas id="radarChart"></canvas></div>
+                <button class="btn-nc" onclick="closeQuiz()" data-t="res_btn">Zurück zur Übersicht</button>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="logo">Next<span>Chapter</span></div>
+        <p style="margin-top: 1rem; color: var(--text-muted);">© 2026 AI Career Solutions</p>
+    </footer>
+
+    <script>
+        let curLang = 'DE';
+        let curIdx = 0;
+        let points = { strategy: 0, social: 0, routine: 0 };
+
+        const texts = {
+            DE: {
+                ticker: "+++ NEXTCHAPTER 2026 +++ KI-REVOLUTION IM ARBEITSMARKT +++ JETZT KOSTENLOS ANALYSIEREN +++",
+                nav_cta: "Gratis KI-Check",
+                hero_badge: "BETA RELEASE 2026",
+                hero_h1: "Predict your<br><span style='color:var(--nc-blue)'>Next Chapter.</span>",
+                hero_p: "Wirst du 2027 noch gebraucht? Erhalte eine präzise KI-Risikoanalyse deiner Karriere. Basierend auf Echtzeit-Daten und Automatisierungstrends.",
+                hero_btn: "Jetzt Risiko-Check starten",
+                impact_title: "DER NEUE STANDARD",
+                card1_h: "Anonymität", card1_p: "Keine Anmeldung. Deine Eingaben werden nur für die Analyse genutzt.",
+                card2_h: "Präzision", card2_p: "Unsere Algorithmen nutzen Automatisierungstrends von 2026.",
+                card3_h: "Echtzeit", card3_p: "Erhalte dein Ergebnis und deinen Action-Plan in unter 2 Min.",
+                offers_h: "Unsere Lösungen",
+                p1_h: "Starter Check", p2_h: "Deep Dive Report", p3_h: "Corporate", p3_price: "Kontakt",
+                p_btn: "Gratis starten", p_btn2: "Report anfordern", p_btn3: "Anfrage senden",
+                res_h: "DEIN KI-SCORE", res_btn: "Zurück zur Übersicht",
+                q1: "Wie oft löst du unvorhersehbare Probleme?", q1_o: ["Täglich", "Teils", "Nie"],
+                q2: "Wie entscheidend ist Empathie in deinem Job?", q2_o: ["Unerlässlich", "Wichtig", "Kaum"],
+                q3: "Sind deine Aufgaben repetitiv?", q3_o: ["Nein", "Teilweise", "Sehr"]
+            },
+            EN: {
+                ticker: "+++ NEXTCHAPTER 2026 +++ AI REVOLUTION IN THE JOB MARKET +++ ANALYZE FOR FREE NOW +++",
+                nav_cta: "Free AI Check",
+                hero_badge: "BETA RELEASE 2026",
+                hero_h1: "Predict your<br><span style='color:var(--nc-blue)'>Next Chapter.</span>",
+                hero_p: "Will you still be needed in 2027? Get a precise AI risk analysis of your career based on real-time data.",
+                hero_btn: "Start Risk Check Now",
+                impact_title: "THE NEW STANDARD",
+                card1_h: "Anonymity", card1_p: "No sign-up. Your data is used only for analysis and not stored.",
+                card2_h: "Precision", card2_p: "Our algorithms use automation trends and market data for 2026.",
+                card3_h: "Real-time", card3_p: "Get your results and individual action plan in under 2 minutes.",
+                offers_h: "Our Solutions",
+                p1_h: "Starter Check", p2_h: "Deep Dive Report", p3_h: "Corporate", p3_price: "Contact",
+                p_btn: "Start for free", p_btn2: "Request Report", p_btn3: "Send Inquiry",
+                res_h: "YOUR AI SCORE", res_btn: "Back to Overview",
+                q1: "How often do you solve unpredictable problems?", q1_o: ["Daily", "Sometimes", "Never"],
+                q2: "How crucial is empathy in your job?", q2_o: ["Critical", "Important", "Low"],
+                q3: "Are your tasks repetitive?", q3_o: ["No", "Partially", "Highly"]
+            }
+        };
+
+        function toggleLang() {
+            curLang = curLang === 'DE' ? 'EN' : 'DE';
+            document.getElementById('langBtn').textContent = curLang === 'DE' ? 'EN' : 'DE';
+            updateContent();
+            if(document.getElementById('quizModal').classList.contains('show')) renderQuestion();
+        }
+
+        function updateContent() {
+            const t = texts[curLang];
+            document.querySelectorAll('[data-t]').forEach(el => {
+                const key = el.getAttribute('data-t');
+                if(t[key]) el.innerHTML = t[key];
+            });
+        }
+
+        function openQuiz() { document.getElementById('quizModal').classList.add('show'); renderQuestion(); }
+        function closeQuiz() { document.getElementById('quizModal').classList.remove('show'); location.reload(); }
+
+        function renderQuestion() {
+            const t = texts[curLang];
+            const qs = [
+                { q: t.q1, cat: "strategy", opts: t.q1_o, v: [10, 5, 0] },
+                { q: t.q2, cat: "social", opts: t.q2_o, v: [10, 5, 0] },
+                { q: t.q3, cat: "routine", opts: t.q3_o, v: [0, 5, 10] }
+            ];
+            const q = qs[curIdx];
+            document.getElementById('qtext').textContent = q.q;
+            const container = document.getElementById('opts');
+            container.innerHTML = '';
+            q.opts.forEach((opt, i) => {
+                const b = document.createElement('button');
+                b.className = 'opt-btn';
+                b.textContent = opt;
+                b.onclick = () => {
+                    points[q.cat] = q.v[i];
+                    if (curIdx < qs.length - 1) { curIdx++; renderQuestion(); }
+                    else { showResults(); }
+                };
+                container.appendChild(b);
+            });
+        }
+
+        function showResults() {
+            document.getElementById('quiz-view').style.display = 'none';
+            document.getElementById('result-view').style.display = 'block';
+            const score = Math.round(((points.strategy + points.social + points.routine) / 30) * 100);
+            document.getElementById('finalScore').textContent = score + "%";
+            new Chart(document.getElementById('radarChart'), {
+                type: 'radar',
+                data: {
+                    labels: ['Social', 'Strategy', 'Routine'],
+                    datasets: [{ data: [points.social, points.strategy, points.routine], backgroundColor: 'rgba(37, 99, 235, 0.2)', borderColor: '#2563eb' }]
+                },
+                options: { scales: { r: { min: 0, max: 10, ticks: { display: false } } }, plugins: { legend: { display: false } } }
+            });
+        }
+        lucide.createIcons();
+    </script>
+</body>
+</html>
