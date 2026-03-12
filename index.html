@@ -19,7 +19,6 @@
     --bg-white: #ffffff;
     --bg-soft: #f0fdf4;
 }
-
 * { margin:0; padding:0; box-sizing:border-box; font-family:'Inter', sans-serif; }
 body { background-color: var(--bg-white); color: var(--text-dark); line-height:1.6; overflow-x:hidden; }
 
@@ -39,7 +38,7 @@ nav { position:fixed; top:35px; width:100%; padding:1.2rem 5%; background:rgba(2
 .btn-nc:hover { background: var(--nc-dark-teal); transform:translateY(-3px); box-shadow:0 20px 40px rgba(20,184,166,0.3); }
 
 /* Hero */
-.hero { padding:12rem 5% 8rem; min-height:90vh; display:flex; align-items:center; justify-content:center; background:linear-gradient(135deg,var(--bg-soft) 0%,#ffffff 100%);}
+.hero { padding:12rem 5% 8rem; min-height:90vh; display:flex; align-items:center; justify-content:center; background:linear-gradient(135deg,var(--bg-soft) 0%,#ffffff 100%); }
 .hero-grid { display:grid; grid-template-columns:1.2fr 1fr; gap:5rem; max-width:1200px; margin:0 auto; align-items:center;}
 .hero-text h1 { font-size:clamp(2.8rem,6vw,4.8rem); line-height:1.05; margin-bottom:2rem; font-weight:900; color: var(--text-dark);}
 .hero-text p { font-size:1.3rem; color: var(--text-muted); margin-bottom:3rem; max-width:650px;}
@@ -165,7 +164,8 @@ const jobs=[];for(let i=1;i<=500;i++)jobs.push("Job "+i);
 
 function toggleLang(){curLang=curLang==='DE'?'EN':'DE';document.getElementById('langBtn').textContent=curLang==='DE'?'EN':'DE';}
 function openQuiz(){document.getElementById('quizModal').classList.add('show');renderQuestion();}
-function closeQuiz(){document.getElementById('quizModal').classList.remove('show');location.reload();}
+function closeQuiz(){document.getElementById('quizModal').classList.remove('show'); location.reload();}
+
 function renderQuestion(){
     const qs=[
         {q:"Wie oft löst du unvorhersehbare Probleme?",cat:"strategy",opts:["Täglich","Teils","Nie"],v:[10,5,0]},
@@ -176,6 +176,7 @@ function renderQuestion(){
     const container=document.getElementById('opts');container.innerHTML='';
     q.opts.forEach((opt,i)=>{const b=document.createElement('button');b.className='opt-btn';b.textContent=opt;b.onclick=()=>{points[q.cat]=q.v[i];if(curIdx<qs.length-1){curIdx++;renderQuestion();}else{showResults();}};container.appendChild(b);});
 }
+
 function showResults(){
     document.getElementById('quiz-view').style.display='none';
     document.getElementById('result-view').style.display='block';
@@ -187,17 +188,60 @@ function showResults(){
         options:{scales:{r:{min:0,max:10,ticks:{display:false}}},plugins:{legend:{display:false}}}
     });
 }
+
+// --- Erweiterte PDF Generierung ---
 function downloadReport(){
     const { jsPDF } = window.jspdf;
-    const doc = new jsPDF();
-    doc.setFontSize(16); doc.text("NextChapter AI Career Report",20,20);
-    doc.setFontSize(12); doc.text("Job: "+jobs[Math.floor(Math.random()*jobs.length)],20,35);
-    doc.text("Score: "+document.getElementById('finalScore').textContent,20,45);
-    doc.text("Empfehlung: "+(points.strategy>7?"Hohes Automatisierungsrisiko":"Job sicherer"),20,55);
-    const email=document.getElementById('email').value;if(email) doc.text("Email: "+email,20,65);
-    doc.save("NextChapter_Report.pdf");
-}
-lucide.createIcons();
-</script>
-</body>
-</html>
+    const doc = new jsPDF({ unit:"pt", format:"a4" });
+    let yOffset = 40;
+
+    doc.setFontSize(24); doc.setTextColor(20,184,166);
+    doc.text("NextChapter AI Career Report", 297.5, yOffset, null, null, "center");
+    yOffset += 30;
+    doc.setFontSize(14); doc.setTextColor(0,0,0);
+    doc.text("Deine persönliche KI-Analyse & Karriereempfehlung", 297.5, yOffset, null, null, "center");
+    yOffset += 20;
+    doc.setLineWidth(1); doc.setDrawColor(20,184,166);
+    doc.line(50, yOffset, 545, yOffset); yOffset += 30;
+
+    // Radar Chart
+    const radarCanvas = document.createElement("canvas"); radarCanvas.width = 400; radarCanvas.height = 400;
+    new Chart(radarCanvas, {
+        type:'radar',
+        data:{labels:['Social','Strategy','Routine'],datasets:[{label:'KI Score',data:[points.social,points.strategy,points.routine],backgroundColor:'rgba(20,184,166,0.2)',borderColor:'#14b8a6',borderWidth:2,pointBackgroundColor:'#14b8a6',pointRadius:6}]},
+        options:{responsive:false, scales:{r:{min:0,max:10,ticks:{display:false}}}, plugins:{legend:{display:false}}}
+    });
+    doc.addImage(radarCanvas.toDataURL("image/png"), 'PNG', 100, yOffset, 400, 400);
+    yOffset += 420;
+
+    // Job Empfehlung
+    const job = jobs[Math.floor(Math.random()*jobs.length)];
+    doc.setFontSize(16); doc.setTextColor(0,0,0);
+    doc.text("Empfohlener Job:", 50, yOffset);
+    doc.setFontSize(14); doc.setTextColor(20,184,166);
+    doc.text(`💼 ${job}`, 50, yOffset+20);
+    yOffset += 50;
+
+    // Skill Gap Analyse
+    const skills = [
+        {name:"Digital Literacy", value:points.strategy, icon:"💻"},
+        {name:"Communication", value:points.social, icon:"🗣️"},
+        {name:"Routine Handling", value:points.routine, icon:"🔄"},
+        {name:"Leadership", value:Math.floor(Math.random()*10), icon:"🎯"}
+    ];
+    doc.setFontSize(16); doc.setTextColor(0,0,0);
+    doc.text("Skill Gap Analyse:",50,yOffset); yOffset += 20;
+    skills.forEach(skill=>{
+        doc.setFillColor(20,184,166);
+        doc.roundedRect(50,yOffset,skill.value*30,14,3,3,'F');
+        doc.setFontSize(12); doc.setTextColor(0,0,0);
+        doc.text(`${skill.icon} ${skill.name} (${skill.value}/10)`, 50+skill.value*30+8, yOffset+11);
+        yOffset += 24;
+    });
+
+    // Karriere Roadmap
+    const roadmap = [
+        {step:"1-3 Monate", desc:"📘 Weiterbildung digitale Tools"},
+        {step:"3-6 Monate", desc:"🤖 Spezialisierung KI-Prozesse"},
+        {step:"6-12 Monate", desc:"🔗 Netzwerk & LinkedIn"},
+        {step:"12+ Monate", desc:"🚀 Projekte
